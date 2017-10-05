@@ -3,6 +3,17 @@ const router = express.Router();
 
 router.get('/:value', (req, res) => {
 	const value = req.params.value;
+	const itsOver9000 = value > 8999;
+	const psl = req.get('x-psl') && req.get('x-psl') === 'yesplease';
+	const auth = psl || (req.query.psl && req.query.psl === 'yesplease');
+	if (!auth) {
+		res.status(403);
+		res.json({message: 'No PSL was given'});
+	}
+	if (req.query.thing && req.query.thing.includes('cold') && req.query.thing.includes('fusion')) {
+		res.status(400);
+		res.json({message: 'That is impossible. ColdFusion is the worst. You must have misheard. If he continues to insist on how good ColdFusion is, he must have lost his mind. Kill him.'});
+	}
 	const data = {
 		thing: req.query.thing,
 		action: req.query.action,
@@ -14,10 +25,12 @@ router.get('/:value', (req, res) => {
 		message = highValueMessage(data);
 	} else if (value > 1000) {
 		message = valueMessage(data);
-	} else {
+	} else if (value > 99) {
 		message = noValueMessage(data);
+	} else {
+		message = "Why are we even talking about this?";
 	}
-	res.json({message});
+	res.json({message, itsOver9000});
 });
 
 const highValueMessage = ({thing, action, position, resource}) => {
