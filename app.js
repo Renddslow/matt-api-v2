@@ -29,7 +29,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   console.log(err);
   res.status(err.status || 500);
-  res.json({message: 'There was a problem. We blame Congress. Please call +12022243121 to have problem corrected.'});
+  res.json({message: 'There was a problem. We blame Congress. Please call +12022243121 to have problem corrected.', err: err.message});
 });
 
 module.exports = app;
