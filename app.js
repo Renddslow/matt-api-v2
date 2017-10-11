@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 const superlatives = require('./routes/super');
+const notes = require('./routes/notes');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/v2/superlatives', superlatives);
+app.use('/v2/notes', notes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
